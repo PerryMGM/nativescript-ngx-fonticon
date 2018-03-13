@@ -68,8 +68,15 @@ export class TNSFontIconService {
   private mapCss(data: any): void {
     let sets = data.split('}');
     let cleanValue = (val: string) => {
-      let v = val.split('content:')[1].toLowerCase().replace(/\\e/, '\\ue').replace(/\\f/, '\\uf').trim().replace(/\"/g, '').replace(/;/g, '');
-      return v;
+      var slashIndex = val.indexOf('\\');
+
+      if (slashIndex !== -1) {
+        let v = val.split('content:')[1].toLowerCase().replace(/\\e/, '\\ue').replace(/\\f/, '\\uf').trim().replace(/\"/g, '').replace(/;/g, '');
+
+        return String.fromCharCode(parseInt(v.substring(2), 16));
+      }
+
+      return val.split("'")[1];
     };
 
     for (let set of sets) {
@@ -80,7 +87,7 @@ export class TNSFontIconService {
         let value = cleanValue(pair[1]);
         for (let key of keys) {
           key = key.trim().slice(1).split(':before')[0];
-          this.css[this._currentName][key] = String.fromCharCode(parseInt(value.substring(2), 16));
+          this.css[this._currentName][key] = value;
           if (TNSFontIconService.debug) {
             console.log(`${key}: ${value}`);
           }
