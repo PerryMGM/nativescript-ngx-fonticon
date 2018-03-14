@@ -60,10 +60,8 @@ sampleApp/platforms/
 .idea/
 *.swp
 *.tgz
-*.js
 *.js.map
 *.metadata.json
-*.d.ts
 !index.d.ts
 !*.e2e.js
 !karma*.js
